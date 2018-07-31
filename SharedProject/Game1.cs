@@ -12,6 +12,8 @@ namespace SharedProject
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        private Texture2D texture;
+        
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -48,6 +50,7 @@ namespace SharedProject
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            texture = Content.Load<Texture2D>("Images/chicken");
         }
 
         /// <summary>
@@ -83,6 +86,9 @@ namespace SharedProject
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            spriteBatch.Draw(texture, new Rectangle(0, 0, 256, 512), Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
