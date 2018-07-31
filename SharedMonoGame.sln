@@ -7,7 +7,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "forWindows", "forWindows\fo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "forAndroid", "forAndroid\forAndroid.csproj", "{99830CB6-A54C-4A22-9196-174ACA842364}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SharedProject", "SharedProject\SharedProject.shproj", "{C01D4F6A-EC53-437F-84E8-98AF0B8C28D3}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SharedProject\SharedProject.projitems*{7f433358-62c6-4b41-b9cf-b8a9c3d4d708}*SharedItemsImports = 4
+		SharedProject\SharedProject.projitems*{99830cb6-a54c-4a22-9196-174aca842364}*SharedItemsImports = 4
+		SharedProject\SharedProject.projitems*{c01d4f6a-ec53-437f-84e8-98af0b8c28d3}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
