@@ -25,10 +25,10 @@
 /processorParam:TextureFormat=Color
 /build:Images/chicken.png
 
-#begin Fonts/font.spritefont
+#begin SpriteFonts/SpriteFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Fonts/font.spritefont
+/build:SpriteFonts/SpriteFont.spritefont
 
