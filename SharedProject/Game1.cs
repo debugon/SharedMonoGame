@@ -20,7 +20,13 @@ namespace SharedProject
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
+#if __ANDROID__
+            //フルスクリーンにしないとステータスバーが表示されてしまうので注意
+            graphics.IsFullScreen = true;
+#else
             graphics.IsFullScreen = false;
+#endif
+
             graphics.PreferredBackBufferWidth = 1920;
             graphics.PreferredBackBufferHeight = 1080;
 
@@ -94,7 +100,7 @@ namespace SharedProject
 #if WINDOWS
             spriteBatch.DrawString(font, "Windows Build!!!", new Vector2(256, 512), Color.White);
 
-#elif ANDROID
+#elif __ANDROID__
             spriteBatch.DrawString(font, "Android Build!!!", new Vector2(256, 512), Color.White);
 
 #endif

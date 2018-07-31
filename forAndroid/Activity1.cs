@@ -19,6 +19,16 @@ namespace forAndroid
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+
+            //ナビゲーションバー、お前を殺す
+            Window.SetFlags(WindowManagerFlags.Fullscreen, WindowManagerFlags.Fullscreen);
+            Window.DecorView.SystemUiVisibility = (StatusBarVisibility)
+                                               ( SystemUiFlags.LowProfile
+                                               | SystemUiFlags.Fullscreen
+                                               | SystemUiFlags.HideNavigation
+                                               | SystemUiFlags.ImmersiveSticky
+                                               );
+
             var g = new Game1();
             SetContentView((View)g.Services.GetService(typeof(View)));
             g.Run();
