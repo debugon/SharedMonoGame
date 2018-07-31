@@ -13,6 +13,7 @@ namespace SharedProject
         SpriteBatch spriteBatch;
 
         private Texture2D texture;
+        private SpriteFont font;
         
         public Game1()
         {
@@ -51,6 +52,7 @@ namespace SharedProject
 
             // TODO: use this.Content to load your game content here
             texture = Content.Load<Texture2D>("Images/chicken");
+            font = Content.Load<SpriteFont>("SpriteFonts/SpriteFont");
         }
 
         /// <summary>
@@ -88,6 +90,14 @@ namespace SharedProject
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             spriteBatch.Draw(texture, new Rectangle(0, 0, 256, 512), Color.White);
+
+#if WINDOWS
+            spriteBatch.DrawString(font, "Windows Build!!!", new Vector2(256, 512), Color.White);
+
+#elif ANDROID
+            spriteBatch.DrawString(font, "Android Build!!!", new Vector2(256, 512), Color.White);
+
+#endif
             spriteBatch.End();
 
             base.Draw(gameTime);
