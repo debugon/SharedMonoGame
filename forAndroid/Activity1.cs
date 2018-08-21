@@ -21,6 +21,7 @@ namespace forAndroid
             base.OnCreate(bundle);
 
             //ナビゲーションバー、お前を殺す
+            //Android Pでタスク変更後、再発を確認
             Window.SetFlags(WindowManagerFlags.Fullscreen, WindowManagerFlags.Fullscreen);
             Window.DecorView.SystemUiVisibility = (StatusBarVisibility)
                                                ( SystemUiFlags.LowProfile

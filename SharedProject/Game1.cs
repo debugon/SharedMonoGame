@@ -14,13 +14,17 @@ namespace SharedProject
 
         private Texture2D texture;
         private SpriteFont font;
-        
+
+        private Model attinyModel;
+        private Model atmegaModel;
+
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-#if __ANDROID__
+#if __MOBILE__
             //フルスクリーンにしないとステータスバーが表示されてしまうので注意
             graphics.IsFullScreen = true;
 #else
@@ -59,6 +63,9 @@ namespace SharedProject
             // TODO: use this.Content to load your game content here
             texture = Content.Load<Texture2D>("Images/chicken");
             font = Content.Load<SpriteFont>("SpriteFonts/SpriteFont");
+
+            attinyModel = Content.Load<Model>("Models/Microcomputer/attiny85");
+            atmegaModel = Content.Load<Model>("Models/Microcomputer/atmega328");
         }
 
         /// <summary>
@@ -100,7 +107,7 @@ namespace SharedProject
 #if WINDOWS
             spriteBatch.DrawString(font, "Windows Build!!!", new Vector2(256, 512), Color.White);
 
-#elif __ANDROID__
+#elif __MOBILE__
             spriteBatch.DrawString(font, "Android Build!!!", new Vector2(256, 512), Color.White);
 
 #endif
