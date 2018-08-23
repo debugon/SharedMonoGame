@@ -18,6 +18,10 @@ namespace SharedProject
         private Model attinyModel;
         private Model atmegaModel;
 
+        Matrix projection;
+        Matrix view;
+
+
 
         public Game1()
         {
@@ -47,6 +51,16 @@ namespace SharedProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
+            projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45.0f),
+                                                            (float)this.graphics.PreferredBackBufferWidth /
+                                                            (float)this.graphics.PreferredBackBufferHeight,
+                                                            0.1f,
+                                                            5000.0f);
+
+            view = Matrix.CreateLookAt(new Vector3(10, 5, 10),
+                                    new Vector3(0, 2, 0),
+                                    Vector3.Up);
 
             base.Initialize();
         }
@@ -104,14 +118,25 @@ namespace SharedProject
             spriteBatch.Begin();
             spriteBatch.Draw(texture, new Rectangle(0, 0, 256, 512), Color.White);
 
-#if WINDOWS
-            spriteBatch.DrawString(font, "Windows Build!!!", new Vector2(256, 512), Color.White);
-
-#elif __MOBILE__
+#if __MOBILE__
             spriteBatch.DrawString(font, "Android Build!!!", new Vector2(256, 512), Color.White);
+
+#else
+            spriteBatch.DrawString(font, "Windows Build!!!", new Vector2(256, 512), Color.White);
 
 #endif
             spriteBatch.End();
+
+            foreach(ModelMesh mesh in attinyModel.Meshes)
+            {
+                foreach(BasicEffect effect in mesh.Effects)
+                {
+                    effect.World = Matrix.Identity;
+                    effect.View = view;
+                    effect.Projection = projection;
+                }
+                mesh.Draw();
+            }
 
             base.Draw(gameTime);
         }
