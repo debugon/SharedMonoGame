@@ -8,7 +8,6 @@ namespace forAndroid
 {
     [Activity(Label = "forAndroid"
         , MainLauncher = true
-        , Icon = "@drawable/icon"
         , Theme = "@style/Theme.Splash"
         , AlwaysRetainTaskState = true
         , LaunchMode = Android.Content.PM.LaunchMode.SingleInstance

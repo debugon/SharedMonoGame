@@ -79,9 +79,6 @@
     <AndroidResource Include="Resources\Values\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Resources\Layout\" />
   </ItemGroup>
   <ItemGroup>
@@ -91,7 +88,42 @@
     <AndroidResource Include="Resources\Values\Styles.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\AndroidManifest.xml" />
+    <None Include="Properties\AndroidManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\icon.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_launcher.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_round_launcher.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\mipmap-mdpi\ic_launcher.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\mipmap-mdpi\ic_round_launcher.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\mipmap-xhdpi\ic_round_launcher.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_round_launcher.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_round_launcher.png" />
   </ItemGroup>
   <Import Project="..\SharedProject\SharedProject.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
