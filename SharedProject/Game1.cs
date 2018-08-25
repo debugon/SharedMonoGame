@@ -18,10 +18,13 @@ namespace SharedProject
         private Model attinyModel;
         private Model atmegaModel;
 
-        Matrix projection;
-        Matrix view;
+        private Matrix[] transforms;
 
+        private Matrix world = Matrix.CreateTranslation(new Vector3(0, 0, 0));
+        private Matrix view = Matrix.CreateLookAt(new Vector3(0, 5, 10), new Vector3(0, 2, 0), Vector3.UnitY);
+        private Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.1f, 200f);
 
+        private Character mechCharacter;
 
         public Game1()
         {
@@ -51,16 +54,9 @@ namespace SharedProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
-            projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45.0f),
-                                                            (float)this.graphics.PreferredBackBufferWidth /
-                                                            (float)this.graphics.PreferredBackBufferHeight,
-                                                            0.1f,
-                                                            5000.0f);
-
-            view = Matrix.CreateLookAt(new Vector3(10, 5, 10),
-                                    new Vector3(0, 2, 0),
-                                    Vector3.Up);
+            mechCharacter = new Character(Content, "Models/Mech/mech", 0.5f);
+            mechCharacter.Scale = 0.5f;
+            mechCharacter.Rotation = new Vector3(-90, 0, 0);
 
             base.Initialize();
         }
@@ -80,6 +76,11 @@ namespace SharedProject
 
             attinyModel = Content.Load<Model>("Models/Microcomputer/attiny85");
             atmegaModel = Content.Load<Model>("Models/Microcomputer/atmega328");
+            transforms = new Matrix[atmegaModel.Bones.Count];
+            atmegaModel.CopyAbsoluteBoneTransformsTo(transforms);
+
+            //mechCharacter.Model = Content.Load<Model>("Models/Mech/mech");
+            
         }
 
         /// <summary>
@@ -102,6 +103,8 @@ namespace SharedProject
                 Exit();
 
             // TODO: Add your update logic here
+            world = mechCharacter.CreateWorldMatrix();
+
 
             base.Update(gameTime);
         }
@@ -127,18 +130,52 @@ namespace SharedProject
 #endif
             spriteBatch.End();
 
-            foreach(ModelMesh mesh in attinyModel.Meshes)
+            foreach(ModelMesh mesh in mechCharacter.Model.Meshes)
             {
                 foreach(BasicEffect effect in mesh.Effects)
                 {
-                    effect.World = Matrix.Identity;
+                    effect.EnableDefaultLighting();
+
+                    effect.World = world;
                     effect.View = view;
                     effect.Projection = projection;
+
                 }
                 mesh.Draw();
             }
 
             base.Draw(gameTime);
         }
+        
+        
+    }
+
+    
+
+    public class Character
+    {
+        public Model Model { set; get; }
+
+        public float Scale { set; get; }
+        public Vector3 Rotation { set; get; }
+        public Vector3 Position { set; get; }
+
+        public Character() { }
+
+        public Character(Microsoft.Xna.Framework.Content.ContentManager contentManager,string filePath, float modelScale)
+        {
+            Model = contentManager.Load<Model>(filePath);
+            Scale = modelScale;
+        }
+
+        public Matrix CreateWorldMatrix()
+        {
+            return Matrix.CreateScale(Scale)
+                * Matrix.CreateFromAxisAngle(Vector3.UnitX, MathHelper.ToRadians(Rotation.X))
+                * Matrix.CreateFromAxisAngle(Vector3.UnitY, MathHelper.ToRadians(Rotation.Y))
+                * Matrix.CreateFromAxisAngle(Vector3.UnitZ, MathHelper.ToRadians(Rotation.Z))
+                * Matrix.CreateTranslation(Position);
+        }
+        
     }
 }
