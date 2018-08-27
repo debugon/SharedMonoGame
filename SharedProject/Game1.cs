@@ -120,7 +120,7 @@ namespace SharedProject
             spriteBatch.End();
 
             #region SpriteBatchで変更されたレンダーステートを元に戻す
-            //合成方法をアルファブレンドに指定（Opaqueだとアルファテストが機能しないので）
+            //合成方法をアルファブレンドに指定（アルファ合成を行いたいのでOpaqueではない）
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
 
             //深度ステンシルステートを通常に変更
@@ -133,9 +133,6 @@ namespace SharedProject
             #region Draw Mech Model
             foreach (ModelMesh mesh in mechCharacter.Model.Meshes)
             {
-#if DEBUG
-                System.Diagnostics.Debug.WriteLine(mesh.Name);
-#endif
                 foreach (BasicEffect effect in mesh.Effects)
                 {
                     //メッシュ名が"Plane"のメッシュを透過
