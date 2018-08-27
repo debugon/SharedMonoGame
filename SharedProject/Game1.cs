@@ -15,11 +15,6 @@ namespace SharedProject
         private Texture2D texture;
         private SpriteFont font;
 
-        private Model attinyModel;
-        private Model atmegaModel;
-
-        private Matrix[] transforms;
-
         private Matrix world = Matrix.CreateTranslation(new Vector3(0, 0, 0));
         private Matrix view = Matrix.CreateLookAt(new Vector3(0, 10, 20), new Vector3(0, 5, 0), Vector3.UnitY);
         private Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.1f, 500f);
@@ -72,12 +67,6 @@ namespace SharedProject
             // TODO: use this.Content to load your game content here
             texture = Content.Load<Texture2D>("Images/chicken");
             font = Content.Load<SpriteFont>("SpriteFonts/SpriteFont");
-
-            attinyModel = Content.Load<Model>("Models/Microcomputer/attiny85");
-            atmegaModel = Content.Load<Model>("Models/Microcomputer/atmega328");
-            transforms = new Matrix[atmegaModel.Bones.Count];
-            atmegaModel.CopyAbsoluteBoneTransformsTo(transforms);
-
             
         }
 
@@ -128,13 +117,14 @@ namespace SharedProject
 #endif
             spriteBatch.End();
 
+            #region Draw Mech Model
             foreach (ModelMesh mesh in mechCharacter.Model.Meshes)
             {
                 System.Diagnostics.Debug.WriteLine(mesh.Name);
                 
                 foreach (BasicEffect effect in mesh.Effects)
                 {
-                    //Hide Plane Mesh
+                    //メッシュ名が"Plane"のメッシュを透過
                     if(mesh.Name == "Plane")
                     {
                         effect.Alpha = 0.0f;
@@ -153,7 +143,7 @@ namespace SharedProject
                 mesh.Draw();
 
             }
-
+            #endregion
 
             base.Draw(gameTime);
         }
@@ -174,8 +164,7 @@ namespace SharedProject
                 mesh.Draw();
             }
         }
-        
-        
+
     }
 
    
