@@ -21,8 +21,8 @@ namespace SharedProject
         private Matrix[] transforms;
 
         private Matrix world = Matrix.CreateTranslation(new Vector3(0, 0, 0));
-        private Matrix view = Matrix.CreateLookAt(new Vector3(0, 5, 10), new Vector3(0, 2, 0), Vector3.UnitY);
-        private Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.1f, 200f);
+        private Matrix view = Matrix.CreateLookAt(new Vector3(0, 10, 20), new Vector3(0, 5, 0), Vector3.UnitY);
+        private Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.1f, 500f);
 
         private Character mechCharacter;
 
@@ -54,8 +54,7 @@ namespace SharedProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            mechCharacter = new Character(Content, "Models/Mech/mech", 0.5f);
-            mechCharacter.Scale = 0.5f;
+            mechCharacter = new Character(Content, "Models/Mech/mech", 1.0f);
             mechCharacter.Rotation = new Vector3(-90, 0, 0);
 
             base.Initialize();
@@ -79,7 +78,6 @@ namespace SharedProject
             transforms = new Matrix[atmegaModel.Bones.Count];
             atmegaModel.CopyAbsoluteBoneTransformsTo(transforms);
 
-            //mechCharacter.Model = Content.Load<Model>("Models/Mech/mech");
             
         }
 
@@ -130,11 +128,22 @@ namespace SharedProject
 #endif
             spriteBatch.End();
 
-            foreach(ModelMesh mesh in mechCharacter.Model.Meshes)
+            foreach (ModelMesh mesh in mechCharacter.Model.Meshes)
             {
-                foreach(BasicEffect effect in mesh.Effects)
+                System.Diagnostics.Debug.WriteLine(mesh.Name);
+                
+                foreach (BasicEffect effect in mesh.Effects)
                 {
+                    //Hide Plane Mesh
+                    if(mesh.Name == "Plane")
+                    {
+                        effect.Alpha = 0.0f;
+                    }
+
                     effect.EnableDefaultLighting();
+                    effect.DiffuseColor = Color.Gray.ToVector3();
+                    effect.SpecularColor = Color.White.ToVector3();
+                    effect.SpecularPower = 50.0f;
 
                     effect.World = world;
                     effect.View = view;
@@ -142,16 +151,22 @@ namespace SharedProject
 
                 }
                 mesh.Draw();
+
             }
 
+
             base.Draw(gameTime);
+        }
+
+        private void DrawModel(Model model, Matrix world, Matrix view, Matrix projection)
+        {
+
         }
         
         
     }
 
-    
-
+   
     public class Character
     {
         public Model Model { set; get; }
