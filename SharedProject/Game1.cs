@@ -49,7 +49,7 @@ namespace SharedProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            mechCharacter = new Character(Content, "Models/Mech/mech", 1.0f);
+            mechCharacter = new Character(Content, "Models/Mech/Mech", 1.0f);
             mechCharacter.Rotation = new Vector3(-90, 0, 0);
 
             base.Initialize();
@@ -67,6 +67,8 @@ namespace SharedProject
             // TODO: use this.Content to load your game content here
             texture = Content.Load<Texture2D>("Images/chicken");
             font = Content.Load<SpriteFont>("SpriteFonts/SpriteFont");
+
+            mechCharacter.Texture = Content.Load<Texture2D>("Models/Mech/Mech5_desert");
             
         }
 
@@ -131,7 +133,12 @@ namespace SharedProject
                         effect.Alpha = 0.0f;
                     }
 
+                    //ライティングの有効化
                     effect.EnableDefaultLighting();
+                    effect.PreferPerPixelLighting = true;
+
+                    effect.Texture = mechCharacter.Texture;
+
                     effect.DiffuseColor = Color.Gray.ToVector3();
                     effect.SpecularColor = Color.White.ToVector3();
                     effect.SpecularPower = 50.0f;
@@ -144,7 +151,7 @@ namespace SharedProject
                 mesh.Draw();
 
             }
-#endregion
+            #endregion
 
             base.Draw(gameTime);
         }
@@ -172,6 +179,7 @@ namespace SharedProject
     public class Character
     {
         public Model Model { set; get; }
+        public Texture2D Texture { set; get; }
 
         public float Scale { set; get; }
         public Vector3 Rotation { set; get; }
