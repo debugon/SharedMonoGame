@@ -119,10 +119,21 @@ namespace SharedProject
 #endif
             spriteBatch.End();
 
+            #region SpriteBatchで変更されたレンダーステートを元に戻す
+            //合成方法をアルファブレンドに指定（Opaqueだとアルファテストが機能しないので）
+            GraphicsDevice.BlendState = BlendState.AlphaBlend;
+
+            //深度ステンシルステートを通常に変更
+            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+
+            //規定値をLinearWrapに設定
+            GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
+            #endregion
+
             #region Draw Mech Model
             foreach (ModelMesh mesh in mechCharacter.Model.Meshes)
             {
-#if __DEBUG__
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine(mesh.Name);
 #endif
                 foreach (BasicEffect effect in mesh.Effects)
@@ -137,8 +148,10 @@ namespace SharedProject
                     effect.EnableDefaultLighting();
                     effect.PreferPerPixelLighting = true;
 
+                    //Androidだとテクスチャが表示されないので読み込む
                     effect.Texture = mechCharacter.Texture;
 
+                    //反射とかいろいろ
                     effect.DiffuseColor = Color.Gray.ToVector3();
                     effect.SpecularColor = Color.White.ToVector3();
                     effect.SpecularPower = 50.0f;
