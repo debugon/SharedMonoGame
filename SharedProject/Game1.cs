@@ -120,8 +120,9 @@ namespace SharedProject
             #region Draw Mech Model
             foreach (ModelMesh mesh in mechCharacter.Model.Meshes)
             {
+#if __DEBUG__
                 System.Diagnostics.Debug.WriteLine(mesh.Name);
-                
+#endif
                 foreach (BasicEffect effect in mesh.Effects)
                 {
                     //メッシュ名が"Plane"のメッシュを透過
@@ -143,7 +144,7 @@ namespace SharedProject
                 mesh.Draw();
 
             }
-            #endregion
+#endregion
 
             base.Draw(gameTime);
         }
