@@ -15,6 +15,7 @@ namespace SharedProject
         private Texture2D texture;
         private SpriteFont font;
 
+        private Camera camera;
         private Matrix view = Matrix.CreateLookAt(new Vector3(0, 10, 20), new Vector3(0, 5, 0), Vector3.UnitY);
         private Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.1f, 500f);
 
@@ -49,6 +50,8 @@ namespace SharedProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            camera = new Camera();
+
             mechObject = new Mech();
             missileObject = new Object();
 
@@ -67,6 +70,16 @@ namespace SharedProject
             // TODO: use this.Content to load your game content here
             texture = Content.Load<Texture2D>("Images/chicken");
             font = Content.Load<SpriteFont>("SpriteFonts/SpriteFont");
+
+            camera = new Camera
+            {
+                Position = new Vector3(0, 10, 20),
+                Target = new Vector3(0, 5, 0),
+                FieldOfView = MathHelper.ToRadians(45),
+                AspectRatio = GraphicsDevice.Viewport.AspectRatio,
+                NearPlaneDistance = 0.1f,
+                FarPlaneDistance = 500f
+            };
 
             mechObject = new Mech
             {
@@ -249,6 +262,35 @@ namespace SharedProject
                 mesh.Draw();
             }
         }
+    }
+
+    public class Camera
+    {
+        public Vector3 Position { set; get; }
+        public Vector3 Target { set; get; }
+
+        public float FieldOfView { set; get; }
+        public float AspectRatio { set; get; }
+        public float NearPlaneDistance { set; get; }
+        public float FarPlaneDistance { set; get; } 
+
+        public Matrix View
+        {
+            get
+            {
+                return Matrix.CreateLookAt(Position, Target, Vector3.UnitY);
+            }
+        }
+
+        public Matrix Projection
+        {
+            get
+            {
+                return Matrix.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, NearPlaneDistance, FarPlaneDistance);
+            }
+        }
+
+        public Camera() { }
     }
 
 
