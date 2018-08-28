@@ -19,7 +19,8 @@ namespace SharedProject
         private Matrix view = Matrix.CreateLookAt(new Vector3(0, 10, 20), new Vector3(0, 5, 0), Vector3.UnitY);
         private Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.1f, 500f);
 
-        private Character mechCharacter;
+        private Mech mechObject;
+        private Object missileObject;
 
         public Game1()
         {
@@ -49,8 +50,8 @@ namespace SharedProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            mechCharacter = new Character(Content, "Models/Mech/Mech", 1.0f);
-            mechCharacter.Rotation = new Vector3(-90, 0, 0);
+            mechObject = new Mech();
+            missileObject = new Object();
 
             base.Initialize();
         }
@@ -68,7 +69,20 @@ namespace SharedProject
             texture = Content.Load<Texture2D>("Images/chicken");
             font = Content.Load<SpriteFont>("SpriteFonts/SpriteFont");
 
-            mechCharacter.Texture = Content.Load<Texture2D>("Models/Mech/Mech5_desert");
+            mechObject = new Mech
+            {
+                Model = Content.Load<Model>("Models/Mech/mech"),
+                Texture = Content.Load<Texture2D>("Models/Mech/Mech5_desert"),
+                Scale = 1.0f,
+                Rotation = new Vector3(-90, 0, 0)
+            };
+
+            missileObject = new Object
+            {
+                Model = Content.Load<Model>("Models/Missile/missile"),
+                Texture = Content.Load<Texture2D>("Models/Missile/uvmap"),
+                Scale = 0.05f
+            };
             
         }
 
@@ -92,7 +106,7 @@ namespace SharedProject
                 Exit();
 
             // TODO: Add your update logic here
-            world = mechCharacter.CreateWorldMatrix();
+            world = mechObject.CreateWorldMatrix();
 
 
             base.Update(gameTime);
@@ -130,64 +144,17 @@ namespace SharedProject
             GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
             #endregion
 
-            #region Draw Mech Model
-            foreach (ModelMesh mesh in mechCharacter.Model.Meshes)
-            {
-                foreach (BasicEffect effect in mesh.Effects)
-                {
-                    //メッシュ名が"Plane"のメッシュを透過
-                    if(mesh.Name == "Plane" && effect.Alpha != 0.0f)
-                    {
-                        effect.Alpha = 0.0f;
-                    }
-
-                    //ライティングの有効化
-                    effect.EnableDefaultLighting();
-                    effect.PreferPerPixelLighting = true;
-
-                    //Androidだとテクスチャが表示されないので読み込む
-                    effect.Texture = mechCharacter.Texture;
-
-                    //反射とかいろいろ
-                    effect.DiffuseColor = Color.Gray.ToVector3();
-                    effect.SpecularColor = Color.White.ToVector3();
-                    effect.SpecularPower = 50.0f;
-
-                    effect.World = world;
-                    effect.View = view;
-                    effect.Projection = projection;
-
-                }
-                mesh.Draw();
-
-            }
-            #endregion
+            //モデル描画
+            mechObject.DrawModel(view, projection);
+            missileObject.DrawModel(view, projection);
 
             base.Draw(gameTime);
         }
-
-
-        private void DrawModel(Model model, Matrix world, Matrix view, Matrix projection)
-        {
-            foreach(ModelMesh mesh in model.Meshes)
-            {
-                foreach(BasicEffect effect in mesh.Effects)
-                {
-                    effect.EnableDefaultLighting();
-
-                    effect.World = world;
-                    effect.View = view;
-                    effect.Projection = projection;
-                }
-
-                mesh.Draw();
-            }
-        }
-
+        
     }
 
    
-    public class Character
+    public class Object
     {
         public Model Model { set; get; }
         public Texture2D Texture { set; get; }
@@ -196,9 +163,9 @@ namespace SharedProject
         public Vector3 Rotation { set; get; }
         public Vector3 Position { set; get; }
 
-        public Character() { }
+        public Object() { }
 
-        public Character(Microsoft.Xna.Framework.Content.ContentManager contentManager,string filePath, float modelScale)
+        public Object(Microsoft.Xna.Framework.Content.ContentManager contentManager,string filePath, float modelScale)
         {
             Model = contentManager.Load<Model>(filePath);
             Scale = modelScale;
@@ -212,6 +179,73 @@ namespace SharedProject
                 * Matrix.CreateFromAxisAngle(Vector3.UnitZ, MathHelper.ToRadians(Rotation.Z))
                 * Matrix.CreateTranslation(Position);
         }
-        
+
+        public virtual void DrawModel(Matrix view, Matrix projection)
+        {
+            Matrix world = CreateWorldMatrix();
+
+            foreach (ModelMesh mesh in Model.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.EnableDefaultLighting();
+
+                    //テクスチャが読み込まれていたら張り付ける
+                    if(Texture != null)
+                    {
+                        effect.Texture = Texture;
+                    }
+
+                    effect.World = world;
+                    effect.View = view;
+                    effect.Projection = projection;
+                }
+
+                mesh.Draw();
+            }
+        }
+
     }
+
+    public class Mech : Object
+    {
+        public override void DrawModel(Matrix view, Matrix projection)
+        {
+            Matrix world = CreateWorldMatrix();
+
+            foreach (ModelMesh mesh in Model.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.EnableDefaultLighting();
+
+                    //メッシュ名が"Plane"のメッシュを透過
+                    if (mesh.Name == "Plane" && effect.Alpha != 0.0f)
+                    {
+                        effect.Alpha = 0.0f;
+                    }
+
+                    //ライティングの有効化
+                    effect.EnableDefaultLighting();
+                    effect.PreferPerPixelLighting = true;
+
+                    //Androidだとテクスチャが表示されないので読み込む
+                    effect.Texture = Texture;
+
+                    //反射とかいろいろ
+                    effect.DiffuseColor = Color.Gray.ToVector3();
+                    effect.SpecularColor = Color.White.ToVector3();
+                    effect.SpecularPower = 50.0f;
+
+                    effect.World = world;
+                    effect.View = view;
+                    effect.Projection = projection;
+                }
+
+                mesh.Draw();
+            }
+        }
+    }
+
+
 }
