@@ -136,7 +136,7 @@ namespace SharedProject
                 foreach (BasicEffect effect in mesh.Effects)
                 {
                     //メッシュ名が"Plane"のメッシュを透過
-                    if(mesh.Name == "Plane")
+                    if(mesh.Name == "Plane" && effect.Alpha != 0.0f)
                     {
                         effect.Alpha = 0.0f;
                     }
@@ -165,6 +165,7 @@ namespace SharedProject
 
             base.Draw(gameTime);
         }
+
 
         private void DrawModel(Model model, Matrix world, Matrix view, Matrix projection)
         {
