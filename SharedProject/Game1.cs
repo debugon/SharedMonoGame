@@ -106,8 +106,6 @@ namespace SharedProject
                 Exit();
 
             // TODO: Add your update logic here
-            world = mechObject.CreateWorldMatrix();
-
 
             base.Update(gameTime);
         }
@@ -163,6 +161,18 @@ namespace SharedProject
         public Vector3 Rotation { set; get; }
         public Vector3 Position { set; get; }
 
+        public Matrix World
+        {
+            get
+            {
+                return Matrix.CreateScale(Scale)
+                    * Matrix.CreateFromAxisAngle(Vector3.UnitX, MathHelper.ToRadians(Rotation.X))
+                    * Matrix.CreateFromAxisAngle(Vector3.UnitY, MathHelper.ToRadians(Rotation.Y))
+                    * Matrix.CreateFromAxisAngle(Vector3.UnitZ, MathHelper.ToRadians(Rotation.Z))
+                    * Matrix.CreateTranslation(Position);
+            }
+        }
+
         public Object() { }
 
         public Object(Microsoft.Xna.Framework.Content.ContentManager contentManager,string filePath, float modelScale)
@@ -175,20 +185,10 @@ namespace SharedProject
 
     public partial class Object
     {
-        //ワールド行列を作成
-        public Matrix CreateWorldMatrix()
-        {
-            return Matrix.CreateScale(Scale)
-                * Matrix.CreateFromAxisAngle(Vector3.UnitX, MathHelper.ToRadians(Rotation.X))
-                * Matrix.CreateFromAxisAngle(Vector3.UnitY, MathHelper.ToRadians(Rotation.Y))
-                * Matrix.CreateFromAxisAngle(Vector3.UnitZ, MathHelper.ToRadians(Rotation.Z))
-                * Matrix.CreateTranslation(Position);
-        }
-
         //モデル描画処理
         public virtual void DrawModel(Matrix view, Matrix projection)
         {
-            Matrix world = CreateWorldMatrix();
+            Matrix world = this.World;
 
             foreach (ModelMesh mesh in Model.Meshes)
             {
@@ -216,7 +216,7 @@ namespace SharedProject
     {
         public override void DrawModel(Matrix view, Matrix projection)
         {
-            Matrix world = CreateWorldMatrix();
+            Matrix world = this.World;
 
             foreach (ModelMesh mesh in Model.Meshes)
             {
