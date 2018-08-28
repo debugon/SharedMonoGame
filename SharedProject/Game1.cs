@@ -154,7 +154,7 @@ namespace SharedProject
     }
 
    
-    public class Object
+    public partial class Object
     {
         public Model Model { set; get; }
         public Texture2D Texture { set; get; }
@@ -170,7 +170,12 @@ namespace SharedProject
             Model = contentManager.Load<Model>(filePath);
             Scale = modelScale;
         }
+        
+    }
 
+    public partial class Object
+    {
+        //ワールド行列を作成
         public Matrix CreateWorldMatrix()
         {
             return Matrix.CreateScale(Scale)
@@ -180,6 +185,7 @@ namespace SharedProject
                 * Matrix.CreateTranslation(Position);
         }
 
+        //モデル描画処理
         public virtual void DrawModel(Matrix view, Matrix projection)
         {
             Matrix world = CreateWorldMatrix();
@@ -191,7 +197,7 @@ namespace SharedProject
                     effect.EnableDefaultLighting();
 
                     //テクスチャが読み込まれていたら張り付ける
-                    if(Texture != null)
+                    if (Texture != null)
                     {
                         effect.Texture = Texture;
                     }
@@ -204,7 +210,6 @@ namespace SharedProject
                 mesh.Draw();
             }
         }
-
     }
 
     public class Mech : Object
