@@ -79,7 +79,7 @@ namespace SharedProject
 
             mechObject = new Mech
             {
-                Model = Content.Load<Model>("Models/Mech/mech"),
+                Model = Content.Load<Model>("Models/Mech/Mech"),
                 Texture = Content.Load<Texture2D>("Models/Mech/Mech5_desert"),
                 Scale = 1.0f,
                 Rotation = new Vector3(-90, 0, 0)
@@ -114,6 +114,7 @@ namespace SharedProject
                 Exit();
 
             // TODO: Add your update logic here
+            mechObject.Rotation += new Vector3(0.0f, 0.1f, 0.0f);
 
             base.Update(gameTime);
         }
