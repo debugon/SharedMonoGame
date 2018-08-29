@@ -90,8 +90,7 @@ namespace SharedProject
                 Model = Content.Load<Model>("Models/Missile/Missile"),
                 Texture = Content.Load<Texture2D>("Models/Missile/MissileTex"),
                 Scale = 1.2f,
-                Position = new Vector3(5, 10, 10),
-                Rotation = new Vector3(0, 0, 0)
+                Position = new Vector3(5, 10, 10)
             };
             
         }
