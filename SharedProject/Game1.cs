@@ -82,14 +82,15 @@ namespace SharedProject
                 Model = Content.Load<Model>("Models/Mech/Mech"),
                 Texture = Content.Load<Texture2D>("Models/Mech/Mech5_desert"),
                 Scale = 1.0f,
-                Rotation = new Vector3(-90, 0, 0)
+                Rotation = new Vector3(-90, 90, 0)
             };
 
             missileObject = new Object
             {
                 Model = Content.Load<Model>("Models/Missile/Missile"),
-                Scale = 1.0f,
-                Position = new Vector3(0, 10, 0),
+                Texture = Content.Load<Texture2D>("Models/Missile/MissileTex"),
+                Scale = 1.2f,
+                Position = new Vector3(0, 10, 10),
                 Rotation = new Vector3(0, 90, 0)
             };
             
@@ -115,7 +116,7 @@ namespace SharedProject
                 Exit();
 
             // TODO: Add your update logic here
-            mechObject.Rotation += new Vector3(0.0f, 0.1f, 0.0f);
+            //mechObject.Rotation += new Vector3(0.0f, 0.1f, 0.0f);
 
             base.Update(gameTime);
         }

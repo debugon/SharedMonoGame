@@ -75,8 +75,8 @@
 /processorParam:TextureFormat=Color
 /build:Models/Mech/Mech5_spec.png.001.png
 
-#begin Models/Missile/missile.FBX
-/importer:FbxImporter
+#begin Models/Missile/Missile.x
+/importer:XImporter
 /processor:ModelProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
@@ -92,9 +92,9 @@
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
-/build:Models/Missile/missile.FBX
+/build:Models/Missile/Missile.x
 
-#begin Models/Missile/uvmap.jpg
+#begin Models/Missile/MissileTex.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -104,5 +104,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Models/Missile/uvmap.jpg
+/build:Models/Missile/MissileTex.png
 
