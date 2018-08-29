@@ -87,9 +87,10 @@ namespace SharedProject
 
             missileObject = new Object
             {
-                Model = Content.Load<Model>("Models/Missile/missile"),
-                Texture = Content.Load<Texture2D>("Models/Missile/uvmap"),
-                Scale = 0.05f
+                Model = Content.Load<Model>("Models/Missile/Missile"),
+                Scale = 1.0f,
+                Position = new Vector3(0, 10, 0),
+                Rotation = new Vector3(0, 90, 0)
             };
             
         }
@@ -152,8 +153,8 @@ namespace SharedProject
             #endregion
 
             //モデル描画
-            mechObject.DrawModel(camera.View, camera.Projection);
-            missileObject.DrawModel(camera.View, camera.Projection);
+            missileObject.DrawModel(missileObject.World, camera.View, camera.Projection);
+            mechObject.DrawModel(mechObject.World, camera.View, camera.Projection);
 
             base.Draw(gameTime);
         }
@@ -195,10 +196,8 @@ namespace SharedProject
     public partial class Object
     {
         //モデル描画処理
-        public virtual void DrawModel(Matrix view, Matrix projection)
+        public virtual void DrawModel(Matrix world, Matrix view, Matrix projection)
         {
-            Matrix world = this.World;
-
             foreach (ModelMesh mesh in Model.Meshes)
             {
                 foreach (BasicEffect effect in mesh.Effects)
@@ -223,10 +222,8 @@ namespace SharedProject
 
     public class Mech : Object
     {
-        public override void DrawModel(Matrix view, Matrix projection)
+        public override void DrawModel(Matrix world, Matrix view, Matrix projection)
         {
-            Matrix world = this.World;
-
             foreach (ModelMesh mesh in Model.Meshes)
             {
                 foreach (BasicEffect effect in mesh.Effects)
