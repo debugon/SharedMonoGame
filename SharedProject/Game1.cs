@@ -121,7 +121,19 @@ namespace SharedProject
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            {
+                switch (startMenu.Visible)
+                {
+                    case true:
+                        startMenu.Visible = false;
+                        break;
+
+                    case false:
+                        startMenu.Visible = true;
+                        break;
+                }
+            
+            }
 
             // TODO: Add your update logic here
             missileObject.Rotation += new Vector3(0.0f, 0.2f, 0.0f);
