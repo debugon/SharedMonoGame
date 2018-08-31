@@ -12,6 +12,8 @@ namespace SharedProject
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        private StartMenuComponent startMenu;
+
         private Texture2D texture;
         private SpriteFont font;
 
@@ -48,6 +50,9 @@ namespace SharedProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            startMenu = new StartMenuComponent(this);
+            Components.Add(startMenu);
+
             camera = new Camera()
             {
                 Position = new Vector3(0, 10, 20),
@@ -102,6 +107,10 @@ namespace SharedProject
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+            Content.Unload();
+            spriteBatch.Dispose();
+
+            base.UnloadContent();
         }
 
         /// <summary>

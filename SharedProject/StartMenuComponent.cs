@@ -7,7 +7,6 @@ namespace SharedProject
     public class StartMenuComponent : DrawableGameComponent
     {
 
-        GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
 
@@ -50,6 +49,10 @@ namespace SharedProject
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+            Game.Content.Unload();
+            spriteBatch.Dispose();
+
+            base.UnloadContent();
         }
 
         /// <summary>
@@ -60,7 +63,7 @@ namespace SharedProject
         public override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+                Game.Exit();
 
             // TODO: Add your update logic here
             
