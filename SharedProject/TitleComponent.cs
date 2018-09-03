@@ -13,7 +13,6 @@ namespace SharedProject
         private Texture2D background;
 
         
-
         public TitleComponent(Game game) : base(game)
         {
             
@@ -85,8 +84,8 @@ namespace SharedProject
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
-            spriteBatch.Draw(logo, new Vector2(0, 0), Color.White);
+            spriteBatch.Draw(background, new Rectangle(0, 0 , GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+            spriteBatch.Draw(logo, new Vector2(GraphicsDevice.Viewport.Width - logo.Width, GraphicsDevice.Viewport.Height - logo.Height), Color.Black);
 
             spriteBatch.End();
 
