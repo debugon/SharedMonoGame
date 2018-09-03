@@ -87,35 +87,31 @@ namespace SharedProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            /*
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
-                title.Visible = false;
-            
-            }
-            else if(Keyboard.GetState().IsKeyUp(Keys.Escape))
-            { 
-                title.Visible = true;
-            }
-            */
+
+            // TODO: Add your update logic here
+
             if (Components.Count == 0)
             {
                 switch (state)
                 {
                     case GameState.Title:
                         Components.Add(new TitleComponent(this));
-                        
                         break;
 
                     case GameState.Play:
+                        Components.Add(new GamePlayComponent(this));
                         break;
 
                     case GameState.Result:
                         break;
-                }
-            }
 
-            // TODO: Add your update logic here
+                    default:
+                        state = GameState.Title;
+                        break;
+                }
+
+                state += 1;
+            }
 
             base.Update(gameTime);
         }
@@ -126,7 +122,7 @@ namespace SharedProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            //GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
             
