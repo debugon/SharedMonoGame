@@ -65,10 +65,14 @@ namespace SharedProject
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
-        { 
+        {
+            KeyboardState state = Keyboard.GetState();
 
             // TODO: Add your update logic here
-            
+            if(state[Keys.Enter] == KeyState.Down)
+            {
+                Game.Components.Remove(this);
+            }
 
             base.Update(gameTime);
         }
@@ -93,5 +97,6 @@ namespace SharedProject
             base.Draw(gameTime);
         }
 
+        public bool ComponentState { get; set; }
     }
 }

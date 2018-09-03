@@ -2,6 +2,13 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+enum GameState
+{
+    Title,
+    Play,
+    Result
+}
+
 namespace SharedProject
 {
     /// <summary>
@@ -12,8 +19,6 @@ namespace SharedProject
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        private TitleComponent titleMenu;
-
         private Texture2D texture;
         private SpriteFont font;
 
@@ -21,6 +26,8 @@ namespace SharedProject
 
         private Mech mechObject;
         private Object missileObject;
+
+        private GameState state { get; set; }
 
         public Game1()
         {
@@ -50,8 +57,7 @@ namespace SharedProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            titleMenu = new TitleComponent(this);
-            Components.Add(titleMenu);
+            state = GameState.Title;
 
             camera = new Camera()
             {
@@ -120,16 +126,33 @@ namespace SharedProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            /*
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
-                titleMenu.Visible = false;
+                title.Visible = false;
             
             }
             else if(Keyboard.GetState().IsKeyUp(Keys.Escape))
             { 
-                titleMenu.Visible = true;
+                title.Visible = true;
             }
+            */
+            if (Components.Count == 0)
+            {
+                switch (state)
+                {
+                    case GameState.Title:
 
+                        Components.Add(new TitleComponent(this));
+                        break;
+
+                    case GameState.Play:
+                        break;
+
+                    case GameState.Result:
+                        break;
+                }
+            }
             // TODO: Add your update logic here
             missileObject.Rotation += new Vector3(0.0f, 0.2f, 0.0f);
             mechObject.Rotation += new Vector3(0.0f, 0.2f, 0.0f);
