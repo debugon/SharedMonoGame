@@ -11,5 +11,6 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Game1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StartMenuComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TitleComponent.cs" />
   </ItemGroup>
 </Project>

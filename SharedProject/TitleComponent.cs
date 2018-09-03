@@ -4,13 +4,17 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SharedProject
 {
-    public class StartMenuComponent : DrawableGameComponent
+    public class TitleComponent : DrawableGameComponent
     {
 
         SpriteBatch spriteBatch;
 
+        private Texture2D logo;
+        private Texture2D background;
 
-        public StartMenuComponent(Game game) : base(game)
+        
+
+        public TitleComponent(Game game) : base(game)
         {
             
         }
@@ -39,7 +43,9 @@ namespace SharedProject
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            
+            logo = Game.Content.Load<Texture2D>("Images/Title/logo");
+            background = Game.Content.Load<Texture2D>("Images/Title/background");
+
         }
 
         /// <summary>
@@ -49,7 +55,6 @@ namespace SharedProject
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
-
             spriteBatch.Dispose();
 
             base.UnloadContent();
@@ -78,7 +83,13 @@ namespace SharedProject
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            
+            spriteBatch.Begin();
+
+            spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+            spriteBatch.Draw(logo, new Vector2(0, 0), Color.White);
+
+            spriteBatch.End();
+
 
             base.Draw(gameTime);
         }

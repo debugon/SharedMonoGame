@@ -12,7 +12,7 @@ namespace SharedProject
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        private StartMenuComponent startMenu;
+        private TitleComponent titleMenu;
 
         private Texture2D texture;
         private SpriteFont font;
@@ -50,8 +50,8 @@ namespace SharedProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            startMenu = new StartMenuComponent(this);
-            Components.Add(startMenu);
+            titleMenu = new TitleComponent(this);
+            Components.Add(titleMenu);
 
             camera = new Camera()
             {
@@ -122,17 +122,12 @@ namespace SharedProject
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
-                switch (startMenu.Visible)
-                {
-                    case true:
-                        startMenu.Visible = false;
-                        break;
-
-                    case false:
-                        startMenu.Visible = true;
-                        break;
-                }
+                titleMenu.Visible = false;
             
+            }
+            else if(Keyboard.GetState().IsKeyUp(Keys.Escape))
+            { 
+                titleMenu.Visible = true;
             }
 
             // TODO: Add your update logic here
