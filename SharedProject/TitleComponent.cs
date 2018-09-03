@@ -66,10 +66,13 @@ namespace SharedProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            KeyboardState state = Keyboard.GetState();
+            if(Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                Game.Exit();
+            }
 
             // TODO: Add your update logic here
-            if(state[Keys.Enter] == KeyState.Down)
+            if(Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
                 Game.Components.Remove(this);
             }
