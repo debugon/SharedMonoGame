@@ -22,11 +22,11 @@ namespace SharedProject
         private Texture2D texture;
         private SpriteFont font;
 
-        private Camera camera;
+        private Camera camera;  
 
         private Mech mechObject;
         private Object missileObject;
-
+        
         private GameState state { get; set; }
 
         public Game1()
@@ -142,8 +142,8 @@ namespace SharedProject
                 switch (state)
                 {
                     case GameState.Title:
-
                         Components.Add(new TitleComponent(this));
+                        
                         break;
 
                     case GameState.Play:
@@ -153,6 +153,7 @@ namespace SharedProject
                         break;
                 }
             }
+
             // TODO: Add your update logic here
             missileObject.Rotation += new Vector3(0.0f, 0.2f, 0.0f);
             mechObject.Rotation += new Vector3(0.0f, 0.2f, 0.0f);
