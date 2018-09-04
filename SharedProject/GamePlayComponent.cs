@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace SharedProject
 {
@@ -112,15 +113,29 @@ namespace SharedProject
 
             // TODO: Add your update logic here
             missileObject.Rotation += new Vector3(0.0f, 0.2f, 0.0f);
-            //mechObject.Rotation += new Vector3(0.0f, 0.2f, 0.0f);
 
             if (Input.IsKeyDown(Keys.W)) mechObject.Position += new Vector3(0.0f, 0.0f, mechObject.Spped);
             if (Input.IsKeyDown(Keys.S)) mechObject.Position -= new Vector3(0.0f, 0.0f, mechObject.Spped);
             if (Input.IsKeyDown(Keys.A)) mechObject.Position += new Vector3(mechObject.Spped, 0.0f, 0.0f);
             if (Input.IsKeyDown(Keys.D)) mechObject.Position -= new Vector3(mechObject.Spped, 0.0f, 0.0f);
 
+#if __MOBILE__
+            TouchCollection touches = TouchPanel.GetState();
+            
+            if(touches.Count != 0)
+            {
+                if(GraphicsDevice.Viewport.Width / 2 < touches[0].Position.X && touches[0].State == TouchLocationState.Moved)
+                    mechObject.Rotation -= new Vector3(0.0f, 0.5f, 0.0f);
+
+                if(GraphicsDevice.Viewport.Width / 2 > touches[0].Position.X && touches[0].State == TouchLocationState.Moved)
+                    mechObject.Rotation += new Vector3(0.0f, 0.5f, 0.0f);
+            }
+            
+#else
             if (Input.IsKeyDown(Keys.Right)) mechObject.Rotation -= new Vector3(0.0f, 0.5f, 0.0f);
             if (Input.IsKeyDown(Keys.Left))  mechObject.Rotation += new Vector3(0.0f, 0.5f, 0.0f);
+            
+#endif
 
             camera.Position = mechObject.Position + new Vector3(0.0f, 30.0f, -30.0f);
             camera.Target = mechObject.Position;
@@ -153,7 +168,7 @@ namespace SharedProject
 #endif
             spriteBatch.End();
 
-            #region SpriteBatchで変更されたレンダーステートを元に戻す
+#region SpriteBatchで変更されたレンダーステートを元に戻す
             //合成方法をアルファブレンドに指定（アルファ合成を行いたいのでOpaqueではない）
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
 
@@ -162,7 +177,7 @@ namespace SharedProject
 
             //規定値をLinearWrapに設定
             GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
-            #endregion
+#endregion
 
             //モデル描画
             missileObject.DrawModel(missileObject.World, camera.View, camera.Projection);

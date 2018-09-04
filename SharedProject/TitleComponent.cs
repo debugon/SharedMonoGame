@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace SharedProject
 {
@@ -71,7 +72,7 @@ namespace SharedProject
             }
 
             // TODO: Add your update logic here
-            if(Input.IsJustKeyUp(Keys.Enter))
+            if(Input.IsJustKeyUp(Keys.Enter) || TouchPanel.GetState().Count > 0)
             {
                 Game.Components.Remove(this);
             }

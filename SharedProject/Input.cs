@@ -54,5 +54,6 @@ namespace SharedProject
         {
             return Keyboard.GetState().IsKeyUp(key);
         }
+
     }
 }
