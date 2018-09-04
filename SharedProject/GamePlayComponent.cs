@@ -12,6 +12,7 @@ namespace SharedProject
         private SpriteFont font;
 
         private Camera camera;
+        private Vector3 offset;
 
         private Mech mechObject;
         private GameObject missileObject;
@@ -45,6 +46,8 @@ namespace SharedProject
             mechObject = new Mech();
             missileObject = new GameObject();
 
+            offset = camera.Position - mechObject.Position;
+
             base.Initialize();
         }
 
@@ -67,7 +70,9 @@ namespace SharedProject
                 Model = Game.Content.Load<Model>("Models/Mech/Mech"),
                 Texture = Game.Content.Load<Texture2D>("Models/Mech/Mech5_desert"),
                 Scale = 1.0f,
-                Rotation = new Vector3(-90.0f, 0.0f, 0.0f)
+                Spped = 0.05f,
+                Rotation = new Vector3(-90.0f, 0.0f, 0.0f),
+                
             };
 
             missileObject = new GameObject
@@ -109,13 +114,16 @@ namespace SharedProject
             missileObject.Rotation += new Vector3(0.0f, 0.2f, 0.0f);
             //mechObject.Rotation += new Vector3(0.0f, 0.2f, 0.0f);
 
-            if (Input.IsKeyDown(Keys.W)) mechObject.Position += new Vector3(0.0f, 0.0f, 1.0f);
-            if (Input.IsKeyDown(Keys.S)) mechObject.Position -= new Vector3(0.0f, 0.0f, 1.0f);
-            if (Input.IsKeyDown(Keys.A)) mechObject.Position += new Vector3(1.0f, 0.0f, 0.0f);
-            if (Input.IsKeyDown(Keys.D)) mechObject.Position -= new Vector3(1.0f, 0.0f, 0.0f);
+            if (Input.IsKeyDown(Keys.W)) mechObject.Position += new Vector3(0.0f, 0.0f, mechObject.Spped);
+            if (Input.IsKeyDown(Keys.S)) mechObject.Position -= new Vector3(0.0f, 0.0f, mechObject.Spped);
+            if (Input.IsKeyDown(Keys.A)) mechObject.Position += new Vector3(mechObject.Spped, 0.0f, 0.0f);
+            if (Input.IsKeyDown(Keys.D)) mechObject.Position -= new Vector3(mechObject.Spped, 0.0f, 0.0f);
 
-            camera.Position = mechObject.Position + new Vector3(0.0f, 15.0f, -5.0f);
-            camera.Target = mechObject.Position + new Vector3(0.0f, 5.0f, 20.0f);
+            if (Input.IsKeyDown(Keys.Right)) mechObject.Rotation -= new Vector3(0.0f, 0.5f, 0.0f);
+            if (Input.IsKeyDown(Keys.Left))  mechObject.Rotation += new Vector3(0.0f, 0.5f, 0.0f);
+
+            camera.Position = mechObject.Position + new Vector3(0.0f, 30.0f, -30.0f);
+            camera.Target = mechObject.Position;
 
             base.Update(gameTime);
         }
@@ -137,6 +145,10 @@ namespace SharedProject
 
 #else
             spriteBatch.DrawString(font, "Windows Build!!!", new Vector2(256, 512), Color.White);
+            spriteBatch.DrawString(font, "Camera.Position:" + camera.Position.ToString(), new Vector2(0, 0), Color.White);
+            spriteBatch.DrawString(font, "Camera.Target:" + camera.Target.ToString(), new Vector2(0, 15), Color.White);
+            spriteBatch.DrawString(font, "Mech.Rotation:" + mechObject.Rotation.Y.ToString(), new Vector2(0, 30), Color.White);
+            spriteBatch.DrawString(font, "Mech.Position:" + mechObject.Position.ToString(), new Vector2(0, 45), Color.White);
 
 #endif
             spriteBatch.End();
@@ -162,6 +174,9 @@ namespace SharedProject
 
     public class Mech : GameObject
     {
+        public float Spped { get; set; }
+        public Vector3 DistanceOfCamera { get; }
+
         public override void DrawModel(Matrix world, Matrix view, Matrix projection)
         {
             foreach (ModelMesh mesh in Model.Meshes)
