@@ -86,8 +86,7 @@ namespace SharedProject
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
-            spriteBatch.Dispose();
-
+            Game.Content.Unload();
             base.UnloadContent();
         }
 
@@ -98,18 +97,16 @@ namespace SharedProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            KeyboardState state = Keyboard.GetState();
 
-            if (state[Keys.Enter] == KeyState.Down)
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
-
                 Game.Components.Remove(this);
             }
 
             // TODO: Add your update logic here
             missileObject.Rotation += new Vector3(0.0f, 0.2f, 0.0f);
             mechObject.Rotation += new Vector3(0.0f, 0.2f, 0.0f);
-
+            
             base.Update(gameTime);
         }
 

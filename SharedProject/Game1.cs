@@ -1,12 +1,13 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-enum GameState
+public enum GameState 
 {
     Title,
     Play,
-    Result
+    //Result
 }
 
 namespace SharedProject
@@ -19,8 +20,9 @@ namespace SharedProject
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        private GameState state { get; set; }
+        public GameState state;
 
+        
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -87,33 +89,43 @@ namespace SharedProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
             // TODO: Add your update logic here
 
-            if (Components.Count == 0)
+            if (Components.Count != 0)
             {
-                switch (state)
-                {
-                    case GameState.Title:
-                        Components.Add(new TitleComponent(this));
-                        break;
-
-                    case GameState.Play:
-                        Components.Add(new GamePlayComponent(this));
-                        break;
-
-                    case GameState.Result:
-                        break;
-
-                    default:
-                        state = GameState.Title;
-                        break;
-                }
-
-                state += 1;
+                base.Update(gameTime);
+                return;
             }
 
+            //GameComponentがRemoveされると実行
+            Components.ComponentRemoved += SwitchState;
+
+            switch (state)
+            {
+                case GameState.Title:
+                    Components.Add(new TitleComponent(this));
+                    break;
+
+                case GameState.Play:
+                    Components.Add(new GamePlayComponent(this));
+                    break;
+            }
+            
             base.Update(gameTime);
+        }
+
+        private void SwitchState(object sender, GameComponentCollectionEventArgs e)
+        {
+            switch (state)
+            {
+                case GameState.Title:
+                    state = GameState.Play;
+                    break;
+
+                case GameState.Play:
+                    state = GameState.Title;
+                    break;
+            }
         }
 
         /// <summary>
@@ -122,13 +134,12 @@ namespace SharedProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            //GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
             
 
             base.Draw(gameTime);
         }
-        
     }
 }

@@ -11,11 +11,10 @@ namespace SharedProject
 
         private Texture2D logo;
         private Texture2D background;
-
         
         public TitleComponent(Game game) : base(game)
         {
-            
+
         }
 
         /// <summary>
@@ -54,8 +53,7 @@ namespace SharedProject
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
-            spriteBatch.Dispose();
-
+            Game.Content.Unload();
             base.UnloadContent();
         }
 
