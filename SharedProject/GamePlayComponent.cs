@@ -67,7 +67,7 @@ namespace SharedProject
                 Model = Game.Content.Load<Model>("Models/Mech/Mech"),
                 Texture = Game.Content.Load<Texture2D>("Models/Mech/Mech5_desert"),
                 Scale = 1.0f,
-                Rotation = new Vector3(-90, 0, 0)
+                Rotation = new Vector3(-90.0f, 0.0f, 0.0f)
             };
 
             missileObject = new GameObject
@@ -107,8 +107,16 @@ namespace SharedProject
 
             // TODO: Add your update logic here
             missileObject.Rotation += new Vector3(0.0f, 0.2f, 0.0f);
-            mechObject.Rotation += new Vector3(0.0f, 0.2f, 0.0f);
-            
+            //mechObject.Rotation += new Vector3(0.0f, 0.2f, 0.0f);
+
+            if (Input.IsKeyDown(Keys.W)) mechObject.Position += new Vector3(0.0f, 0.0f, 1.0f);
+            if (Input.IsKeyDown(Keys.S)) mechObject.Position -= new Vector3(0.0f, 0.0f, 1.0f);
+            if (Input.IsKeyDown(Keys.A)) mechObject.Position += new Vector3(1.0f, 0.0f, 0.0f);
+            if (Input.IsKeyDown(Keys.D)) mechObject.Position -= new Vector3(1.0f, 0.0f, 0.0f);
+
+            camera.Position = mechObject.Position + new Vector3(0.0f, 15.0f, -5.0f);
+            camera.Target = mechObject.Position + new Vector3(0.0f, 5.0f, 20.0f);
+
             base.Update(gameTime);
         }
 
