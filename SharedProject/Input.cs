@@ -3,23 +3,23 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SharedProject
 {
-    class Input
+    static class Input
     {
-        private KeyboardState oldKeyState;
-        private KeyboardState newKeyState;
+        private static KeyboardState oldKeyState;
+        private static KeyboardState newKeyState;
 
-        public void Init()
+        public static void Init()
         {
             Update();
         }
 
-        public void Update()
+        public static void Update()
         {
             oldKeyState = newKeyState;
             newKeyState = Keyboard.GetState();
         }
 
-        public bool IsJustKeyDown(Keys key)
+        public static bool IsJustKeyDown(Keys key)
         {
             bool down = false;
 
@@ -31,7 +31,7 @@ namespace SharedProject
             return down;
         }
 
-        public bool IsJustKeyUp(Keys key)
+        public static bool IsJustKeyUp(Keys key)
         {
             bool up = false;
 
@@ -43,12 +43,12 @@ namespace SharedProject
             return up;
         }
 
-        public bool IsKeyDown(Keys key)
+        public static bool IsKeyDown(Keys key)
         {
             return Keyboard.GetState().IsKeyDown(key);
         }
 
-        public bool IsKeyUp(Keys key)
+        public static bool IsKeyUp(Keys key)
         {
             return Keyboard.GetState().IsKeyUp(key);
         }
