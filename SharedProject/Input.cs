@@ -3,12 +3,14 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SharedProject
 {
-    static class Input
+    public class Input
     {
         private static KeyboardState oldKeyState;
         private static KeyboardState newKeyState;
 
-        public static void Init()
+        public Input() { }
+
+        public static void Initialize()
         {
             Update();
         }

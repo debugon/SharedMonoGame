@@ -6,7 +6,6 @@ namespace SharedProject
 {
     public class TitleComponent : DrawableGameComponent
     {
-
         SpriteBatch spriteBatch;
 
         private Texture2D logo;
@@ -26,7 +25,7 @@ namespace SharedProject
         public override void Initialize()
         {
             // TODO: Add your initialization logic here
-            
+            Input.Initialize();
 
             base.Initialize();
         }
@@ -64,13 +63,15 @@ namespace SharedProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            if(Keyboard.GetState().IsKeyDown(Keys.Escape))
+            Input.Update();
+
+            if(Input.IsJustKeyUp(Keys.Escape))
             {
                 Game.Exit();
             }
 
             // TODO: Add your update logic here
-            if(Keyboard.GetState().IsKeyDown(Keys.Enter))
+            if(Input.IsJustKeyUp(Keys.Enter))
             {
                 Game.Components.Remove(this);
             }

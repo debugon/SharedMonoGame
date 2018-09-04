@@ -30,6 +30,7 @@ namespace SharedProject
         public override void Initialize()
         {
             // TODO: Add your initialization logic here
+            Input.Initialize();
 
             camera = new Camera()
             {
@@ -97,8 +98,9 @@ namespace SharedProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
+            Input.Update();
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+            if (Input.IsJustKeyUp(Keys.Enter))
             {
                 Game.Components.Remove(this);
             }
