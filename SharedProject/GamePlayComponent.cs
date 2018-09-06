@@ -120,16 +120,22 @@ namespace SharedProject
             if (Input.IsKeyDown(Keys.D)) mechObject.Position -= new Vector3(mechObject.Spped, 0.0f, 0.0f);
 
 #if __MOBILE__
-            TouchCollection touches = TouchPanel.GetState();
+            //TouchCollection touches = TouchPanel.GetState();
             
-            if(touches.Count != 0)
-            {
-                if(GraphicsDevice.Viewport.Width / 2 < touches[0].Position.X && touches[0].State == TouchLocationState.Moved)
-                    mechObject.Rotation -= new Vector3(0.0f, 0.5f, 0.0f);
+            //if(touches.Count != 0)
+            //{
+            //    if(GraphicsDevice.Viewport.Width / 2 < touches[0].Position.X && touches[0].State == TouchLocationState.Moved)
+            //        mechObject.Rotation -= new Vector3(0.0f, 0.5f, 0.0f);
 
-                if(GraphicsDevice.Viewport.Width / 2 > touches[0].Position.X && touches[0].State == TouchLocationState.Moved)
-                    mechObject.Rotation += new Vector3(0.0f, 0.5f, 0.0f);
+            //    if(GraphicsDevice.Viewport.Width / 2 > touches[0].Position.X && touches[0].State == TouchLocationState.Moved)
+            //        mechObject.Rotation += new Vector3(0.0f, 0.5f, 0.0f);
+            //}
+
+            if(Input.IsTap())
+            {
+                mechObject.Rotation -= new Vector3(0.0f, 0.5f, 0.0f);
             }
+
             
 #else
             if (Input.IsKeyDown(Keys.Right)) mechObject.Rotation -= new Vector3(0.0f, 0.5f, 0.0f);
