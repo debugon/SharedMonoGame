@@ -76,7 +76,8 @@ namespace SharedProject
                 Scale = 1.0f,
                 Spped = 0.05f,
                 Position = new Vector3(0.0f, 0.0f, 0.0f),
-                Rotation = new Vector3(0.0f, 0.0f, 180.0f)
+                Rotation = new Vector3(0.0f, 0.0f, 180.0f),
+                FrontDirection = Vector3.TransformNormal(Vector3.UnitY, Matrix.CreateRotationZ(mechObject.Rotation.Z))
                 
             };
 
@@ -130,10 +131,8 @@ namespace SharedProject
             // TODO: Add your update logic here
             missileObject.Rotation += new Vector3(0.0f, 0.2f, 0.0f);
 
-            if (Input.IsKeyDown(Keys.W)) mechObject.Position += new Vector3(0.0f, mechObject.Spped, 0.0f);
-            if (Input.IsKeyDown(Keys.S)) mechObject.Position -= new Vector3(0.0f, mechObject.Spped, 0.0f);
-            if (Input.IsKeyDown(Keys.A)) mechObject.Position += new Vector3(mechObject.Spped, 0.0f, 0.0f);
-            if (Input.IsKeyDown(Keys.D)) mechObject.Position -= new Vector3(mechObject.Spped, 0.0f, 0.0f);
+            //正面の単位ベクトルを取得（MathHelper使ってるから重いかも）
+            mechObject.FrontDirection = Vector3.TransformNormal(Vector3.UnitY, Matrix.CreateRotationZ(MathHelper.ToRadians(mechObject.Rotation.Z - 180)));
 
 #if __MOBILE__
             //TouchCollection touches = TouchPanel.GetState();
@@ -151,18 +150,24 @@ namespace SharedProject
             {
                 mechObject.Rotation -= new Vector3(0.0f, 0.5f, 0.0f);
             }
-
             
 #else
+            //向いている方向（正面）に移動
+            if (Input.IsKeyDown(Keys.Up)) mechObject.Position += new Vector3(mechObject.Spped, mechObject.Spped, 0.0f) * mechObject.FrontDirection;
+            if (Input.IsKeyDown(Keys.Down)) mechObject.Position -= new Vector3(mechObject.Spped, mechObject.Spped, 0.0f) * mechObject.FrontDirection;
+
+            //Mechの回転
+            if (Input.IsKeyDown(Keys.Left)) mechObject.Rotation += new Vector3(0.0f, 0.0f, 0.5f);
             if (Input.IsKeyDown(Keys.Right)) mechObject.Rotation -= new Vector3(0.0f, 0.0f, 0.5f);
-            if (Input.IsKeyDown(Keys.Left))  mechObject.Rotation += new Vector3(0.0f, 0.0f, 0.5f);
-            
 #endif
 
-            camera.Position = mechObject.Position + new Vector3(0.0f, -30.0f, 20.0f);
-            camera.Target = mechObject.Position + new Vector3(0.0f, 20.0f, 10.0f);
+            camera.Position = new Vector3(0.0f, -30.0f, 20.0f);
+            camera.Target = new Vector3(0.0f, 20.0f, 10.0f);
 
             camera.RotationTarget(mechObject.Rotation.Z - 180);
+
+            camera.Position += mechObject.Position;
+            camera.Target += mechObject.Position;
 
             base.Update(gameTime);
         }
@@ -188,6 +193,7 @@ namespace SharedProject
             spriteBatch.DrawString(font, "Camera.Target:" + camera.Target.ToString(), new Vector2(0, 15), Color.White);
             spriteBatch.DrawString(font, "Mech.Rotation:" + mechObject.Rotation.ToString(), new Vector2(0, 30), Color.White);
             spriteBatch.DrawString(font, "Mech.Position:" + mechObject.Position.ToString(), new Vector2(0, 45), Color.White);
+            spriteBatch.DrawString(font, "Mech.Front:" + mechObject.FrontDirection.ToString(), new Vector2(0, 60), Color.White);
 
 #endif
             spriteBatch.End();
@@ -227,7 +233,7 @@ namespace SharedProject
     public class Mech : GameObject
     {
         public float Spped { get; set; }
-        public Vector3 DistanceOfCamera { get; }
+        public Vector3 FrontDirection { get; set; }
 
         public override void DrawModel(Matrix world, Matrix view, Matrix projection)
         {

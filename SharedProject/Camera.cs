@@ -32,7 +32,7 @@ namespace SharedProject
         }
 
         /// <summary>
-        /// Z軸を中心に回転（向いている方向に移動しないので未完成）
+        /// Z軸を中心に回転（原点Oを基点にするので注意）
         /// </summary>
         /// <param name="degrees"></param>
         /// <returns></returns>
