@@ -75,7 +75,9 @@ namespace SharedProject
                 Texture = Game.Content.Load<Texture2D>("Models/Mech/Mech5_desert"),
                 Scale = 1.0f,
                 Spped = 0.05f,
-                Position = new Vector3(0.0f, 0.0f, 0.0f)                
+                Position = new Vector3(0.0f, 0.0f, 0.0f),
+                Rotation = new Vector3(0.0f, 0.0f, 180.0f)
+                
             };
 
             missileObject = new GameObject
@@ -157,10 +159,10 @@ namespace SharedProject
             
 #endif
 
-            camera.Position = new Vector3(0.0f, 40.0f, 40.0f);
-            camera.Target = mechObject.Position;
+            camera.Position = mechObject.Position + new Vector3(0.0f, -30.0f, 20.0f);
+            camera.Target = mechObject.Position + new Vector3(0.0f, 20.0f, 10.0f);
 
-            //camera.RotationTarget(mechObject.Rotation.Y);
+            camera.RotationTarget(mechObject.Rotation.Z - 180);
 
             base.Update(gameTime);
         }
@@ -184,7 +186,7 @@ namespace SharedProject
             spriteBatch.DrawString(font, "Windows Build!!!", new Vector2(256, 512), Color.White);
             spriteBatch.DrawString(font, "Camera.Position:" + camera.Position.ToString(), new Vector2(0, 0), Color.White);
             spriteBatch.DrawString(font, "Camera.Target:" + camera.Target.ToString(), new Vector2(0, 15), Color.White);
-            spriteBatch.DrawString(font, "Mech.Rotation:" + mechObject.Rotation.Y.ToString(), new Vector2(0, 30), Color.White);
+            spriteBatch.DrawString(font, "Mech.Rotation:" + mechObject.Rotation.ToString(), new Vector2(0, 30), Color.White);
             spriteBatch.DrawString(font, "Mech.Position:" + mechObject.Position.ToString(), new Vector2(0, 45), Color.White);
 
 #endif

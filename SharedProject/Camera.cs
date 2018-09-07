@@ -32,7 +32,7 @@ namespace SharedProject
         }
 
         /// <summary>
-        /// Y軸を中心に回転（向いている方向に移動しないので未完成）
+        /// Z軸を中心に回転（向いている方向に移動しないので未完成）
         /// </summary>
         /// <param name="degrees"></param>
         /// <returns></returns>
@@ -41,9 +41,9 @@ namespace SharedProject
             float radian = MathHelper.ToRadians(degrees);
             float cos = (float)Math.Cos(radian);
             float sin = (float)Math.Sin(radian);
-            
-            Position = new Vector3(Position.X * cos - Position.Z * sin, Position.Y, -(Position.X * sin + Position.Z * cos));
-            Target = new Vector3(-(Target.X * cos - Target.Z * sin), Target.Y, Target.X * sin + Target.Z * cos);
+                
+            Position = new Vector3(Position.X * cos - Position.Y * sin, Position.X * sin + Position.Y * cos, Position.Z);
+            Target = new Vector3(Target.X * cos - Target.Y * sin, Target.X * sin + Target.Y * cos, Target.Z);
 
         }
 
