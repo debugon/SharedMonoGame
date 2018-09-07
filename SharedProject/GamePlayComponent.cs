@@ -77,8 +77,10 @@ namespace SharedProject
                 Spped = 0.05f,
                 Position = new Vector3(0.0f, 0.0f, 0.0f),
                 Rotation = new Vector3(0.0f, 0.0f, 180.0f),
-                FrontDirection = Vector3.TransformNormal(Vector3.UnitY, Matrix.CreateRotationZ(mechObject.Rotation.Z))
-                
+                FrontDirection = Vector3.TransformNormal(Vector3.UnitY, Matrix.CreateRotationZ(mechObject.Rotation.Z)),
+                CameraOffset = new Vector3(0.0f, -30.0f, 20.0f),
+                TargetOffset = new Vector3(0.0f, 20.0f, 10.0f)
+
             };
 
             missileObject = new GameObject
@@ -160,12 +162,14 @@ namespace SharedProject
             if (Input.IsKeyDown(Keys.Left)) mechObject.Rotation += new Vector3(0.0f, 0.0f, 0.5f);
             if (Input.IsKeyDown(Keys.Right)) mechObject.Rotation -= new Vector3(0.0f, 0.0f, 0.5f);
 #endif
+            //原点からの座標にセット
+            camera.Position = mechObject.CameraOffset;
+            camera.Target = mechObject.TargetOffset;
 
-            camera.Position = new Vector3(0.0f, -30.0f, 20.0f);
-            camera.Target = new Vector3(0.0f, 20.0f, 10.0f);
-
+            //カメラ座標とターゲット座標を回転
             camera.RotationTarget(mechObject.Rotation.Z - 180);
 
+            //Mechの位置に反映
             camera.Position += mechObject.Position;
             camera.Target += mechObject.Position;
 
@@ -234,6 +238,8 @@ namespace SharedProject
     {
         public float Spped { get; set; }
         public Vector3 FrontDirection { get; set; }
+        public Vector3 CameraOffset { get; set; }
+        public Vector3 TargetOffset { get; set; }
 
         public override void DrawModel(Matrix world, Matrix view, Matrix projection)
         {
