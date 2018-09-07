@@ -131,7 +131,7 @@ namespace SharedProject
             }
 
             // TODO: Add your update logic here
-            missileObject.Rotation += new Vector3(0.0f, 0.2f, 0.0f);
+            missileObject.Rotation += new Vector3(0.0f, 0.0f, 0.2f);
 
             //正面の単位ベクトルを取得（MathHelper使ってるから重いかも）
             mechObject.FrontDirection = Vector3.TransformNormal(Vector3.UnitY, Matrix.CreateRotationZ(MathHelper.ToRadians(mechObject.Rotation.Z - 180)));
