@@ -19,7 +19,7 @@ namespace SharedProject
         {
             get
             {
-                return Matrix.CreateLookAt(Position, Target, Vector3.UnitY);
+                return Matrix.CreateLookAt(Position, Target, Vector3.UnitZ);
             }
         }
 

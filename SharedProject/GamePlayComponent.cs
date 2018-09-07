@@ -18,6 +18,9 @@ namespace SharedProject
         private Mech mechObject;
         private GameObject missileObject;
 
+        private BasicEffect effect;
+        private VertexPositionTexture[] floorVerts;
+
         public GamePlayComponent(Game game) : base(game)
         {
 
@@ -46,7 +49,7 @@ namespace SharedProject
 
             mechObject = new Mech();
             missileObject = new GameObject();
-
+            
             offset = camera.Position - mechObject.Position;
 
             base.Initialize();
@@ -72,8 +75,7 @@ namespace SharedProject
                 Texture = Game.Content.Load<Texture2D>("Models/Mech/Mech5_desert"),
                 Scale = 1.0f,
                 Spped = 0.05f,
-                Rotation = new Vector3(-90.0f, 0.0f, 0.0f),
-                
+                Position = new Vector3(0.0f, 0.0f, 0.0f)                
             };
 
             missileObject = new GameObject
@@ -83,6 +85,18 @@ namespace SharedProject
                 Scale = 1.2f,
                 Position = new Vector3(5, 10, 10)
             };
+
+            floorVerts = new VertexPositionTexture[6];
+
+            floorVerts[0].Position = new Vector3(-20, -20, 0);
+            floorVerts[1].Position = new Vector3(-20, 20, 0);
+            floorVerts[2].Position = new Vector3(20, -20, 0);
+
+            floorVerts[3].Position = floorVerts[1].Position;
+            floorVerts[4].Position = new Vector3(20, 20, 0);
+            floorVerts[5].Position = floorVerts[2].Position;
+
+            effect = new BasicEffect(GraphicsDevice);
 
         }
 
@@ -114,8 +128,8 @@ namespace SharedProject
             // TODO: Add your update logic here
             missileObject.Rotation += new Vector3(0.0f, 0.2f, 0.0f);
 
-            if (Input.IsKeyDown(Keys.W)) mechObject.Position += new Vector3(0.0f, 0.0f, mechObject.Spped);
-            if (Input.IsKeyDown(Keys.S)) mechObject.Position -= new Vector3(0.0f, 0.0f, mechObject.Spped);
+            if (Input.IsKeyDown(Keys.W)) mechObject.Position += new Vector3(0.0f, mechObject.Spped, 0.0f);
+            if (Input.IsKeyDown(Keys.S)) mechObject.Position -= new Vector3(0.0f, mechObject.Spped, 0.0f);
             if (Input.IsKeyDown(Keys.A)) mechObject.Position += new Vector3(mechObject.Spped, 0.0f, 0.0f);
             if (Input.IsKeyDown(Keys.D)) mechObject.Position -= new Vector3(mechObject.Spped, 0.0f, 0.0f);
 
@@ -138,13 +152,15 @@ namespace SharedProject
 
             
 #else
-            if (Input.IsKeyDown(Keys.Right)) mechObject.Rotation -= new Vector3(0.0f, 0.5f, 0.0f);
-            if (Input.IsKeyDown(Keys.Left))  mechObject.Rotation += new Vector3(0.0f, 0.5f, 0.0f);
+            if (Input.IsKeyDown(Keys.Right)) mechObject.Rotation -= new Vector3(0.0f, 0.0f, 0.5f);
+            if (Input.IsKeyDown(Keys.Left))  mechObject.Rotation += new Vector3(0.0f, 0.0f, 0.5f);
             
 #endif
 
-            camera.Position = mechObject.Position + new Vector3(0.0f, 30.0f, -30.0f);
+            camera.Position = new Vector3(0.0f, 40.0f, 40.0f);
             camera.Target = mechObject.Position;
+
+            //camera.RotationTarget(mechObject.Rotation.Y);
 
             base.Update(gameTime);
         }
@@ -188,6 +204,19 @@ namespace SharedProject
             //モデル描画
             missileObject.DrawModel(missileObject.World, camera.View, camera.Projection);
             mechObject.DrawModel(mechObject.World, camera.View, camera.Projection);
+
+            effect.View = camera.View;
+            effect.Projection = camera.Projection;
+
+            foreach(EffectPass pass in effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+
+                effect.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList,
+                                                        floorVerts,
+                                                        0,
+                                                        2);
+            }
 
             base.Draw(gameTime);
         }
