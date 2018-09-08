@@ -77,7 +77,6 @@ namespace SharedProject
                 Spped = 0.05f,
                 Position = new Vector3(0.0f, 0.0f, 0.0f),
                 Rotation = new Vector3(0.0f, 0.0f, 180.0f),
-                FrontDirection = Vector3.TransformNormal(Vector3.UnitY, Matrix.CreateRotationZ(mechObject.Rotation.Z)),
                 CameraOffset = new Vector3(0.0f, -30.0f, 20.0f),
                 TargetOffset = new Vector3(0.0f, 20.0f, 10.0f)
 
@@ -135,6 +134,7 @@ namespace SharedProject
 
             //正面の単位ベクトルを取得（MathHelper使ってるから重いかも）
             mechObject.FrontDirection = Vector3.TransformNormal(Vector3.UnitY, Matrix.CreateRotationZ(MathHelper.ToRadians(mechObject.Rotation.Z - 180)));
+            mechObject.SideDirection = Vector3.TransformNormal(Vector3.UnitY, Matrix.CreateRotationZ(MathHelper.ToRadians(mechObject.Rotation.Z - 90)));
 
 #if __MOBILE__
             //TouchCollection touches = TouchPanel.GetState();
@@ -155,8 +155,10 @@ namespace SharedProject
             
 #else
             //向いている方向（正面）に移動
-            if (Input.IsKeyDown(Keys.Up)) mechObject.Position += new Vector3(mechObject.Spped, mechObject.Spped, 0.0f) * mechObject.FrontDirection;
-            if (Input.IsKeyDown(Keys.Down)) mechObject.Position -= new Vector3(mechObject.Spped, mechObject.Spped, 0.0f) * mechObject.FrontDirection;
+            if (Input.IsKeyDown(Keys.W)) mechObject.Position += new Vector3(mechObject.Spped, mechObject.Spped, 0.0f) * mechObject.FrontDirection;
+            if (Input.IsKeyDown(Keys.S)) mechObject.Position -= new Vector3(mechObject.Spped, mechObject.Spped, 0.0f) * mechObject.FrontDirection;
+            if (Input.IsKeyDown(Keys.A)) mechObject.Position += new Vector3(mechObject.Spped, mechObject.Spped, 0.0f) * mechObject.SideDirection;
+            if (Input.IsKeyDown(Keys.D)) mechObject.Position -= new Vector3(mechObject.Spped, mechObject.Spped, 0.0f) * mechObject.SideDirection;
 
             //Mechの回転
             if (Input.IsKeyDown(Keys.Left)) mechObject.Rotation += new Vector3(0.0f, 0.0f, 0.5f);
@@ -238,6 +240,7 @@ namespace SharedProject
     {
         public float Spped { get; set; }
         public Vector3 FrontDirection { get; set; }
+        public Vector3 SideDirection { get; set; }
         public Vector3 CameraOffset { get; set; }
         public Vector3 TargetOffset { get; set; }
 
