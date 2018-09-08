@@ -16,6 +16,8 @@ namespace SharedProject
         private Vector3 offset;
 
         private Mech mechObject;
+
+        private GameObject floorObject;
         private GameObject missileObject;
 
         private BasicEffect effect;
@@ -48,6 +50,7 @@ namespace SharedProject
             };
 
             mechObject = new Mech();
+            floorObject = new GameObject();
             missileObject = new GameObject();
             
             offset = camera.Position - mechObject.Position;
@@ -75,11 +78,19 @@ namespace SharedProject
                 Texture = Game.Content.Load<Texture2D>("Models/Mech/Mech5_desert"),
                 Scale = 1.0f,
                 Spped = 0.05f,
-                Position = new Vector3(0.0f, 0.0f, 0.0f),
+                Position = Vector3.Zero,
                 Rotation = new Vector3(0.0f, 0.0f, 180.0f),
                 CameraOffset = new Vector3(0.0f, -30.0f, 20.0f),
                 TargetOffset = new Vector3(0.0f, 20.0f, 10.0f)
 
+            };
+
+            floorObject = new GameObject
+            {
+                Model = Game.Content.Load<Model>("Models/Floor/Floor_plate"),
+                Texture = Game.Content.Load<Texture2D>("Models/Floor/Iron_Plate_DIF"),
+                Scale = 10.0f,
+                Position = Vector3.Zero
             };
 
             missileObject = new GameObject
@@ -134,6 +145,8 @@ namespace SharedProject
 
             //正面の単位ベクトルを取得（MathHelper使ってるから重いかも）
             mechObject.FrontDirection = Vector3.TransformNormal(Vector3.UnitY, Matrix.CreateRotationZ(MathHelper.ToRadians(mechObject.Rotation.Z - 180)));
+
+            //横の単位ベクトルを取得
             mechObject.SideDirection = Vector3.TransformNormal(Vector3.UnitY, Matrix.CreateRotationZ(MathHelper.ToRadians(mechObject.Rotation.Z - 90)));
 
 #if __MOBILE__
@@ -154,15 +167,19 @@ namespace SharedProject
             }
             
 #else
+            #region PC操作
             //向いている方向（正面）に移動
             if (Input.IsKeyDown(Keys.W)) mechObject.Position += new Vector3(mechObject.Spped, mechObject.Spped, 0.0f) * mechObject.FrontDirection;
             if (Input.IsKeyDown(Keys.S)) mechObject.Position -= new Vector3(mechObject.Spped, mechObject.Spped, 0.0f) * mechObject.FrontDirection;
+
+            //向いている方向に対して水平に移動
             if (Input.IsKeyDown(Keys.A)) mechObject.Position += new Vector3(mechObject.Spped, mechObject.Spped, 0.0f) * mechObject.SideDirection;
             if (Input.IsKeyDown(Keys.D)) mechObject.Position -= new Vector3(mechObject.Spped, mechObject.Spped, 0.0f) * mechObject.SideDirection;
 
             //Mechの回転
             if (Input.IsKeyDown(Keys.Left)) mechObject.Rotation += new Vector3(0.0f, 0.0f, 0.5f);
             if (Input.IsKeyDown(Keys.Right)) mechObject.Rotation -= new Vector3(0.0f, 0.0f, 0.5f);
+            #endregion
 #endif
             //原点からの座標にセット
             camera.Position = mechObject.CameraOffset;
@@ -217,6 +234,7 @@ namespace SharedProject
 
             //モデル描画
             missileObject.DrawModel(missileObject.World, camera.View, camera.Projection);
+            floorObject.DrawModel(floorObject.World, camera.View, camera.Projection);
             mechObject.DrawModel(mechObject.World, camera.View, camera.Projection);
 
             effect.View = camera.View;
