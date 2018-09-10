@@ -227,7 +227,7 @@ namespace SharedProject
 #endif
             spriteBatch.End();
 
-#region SpriteBatchで変更されたレンダーステートを元に戻す
+            #region SpriteBatchで変更されたレンダーステートを元に戻す
             //合成方法をアルファブレンドに指定（アルファ合成を行いたいのでOpaqueではない）
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
 
@@ -236,7 +236,7 @@ namespace SharedProject
 
             //規定値をLinearWrapに設定
             GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
-#endregion
+            #endregion
 
             //モデル描画
             missileObject.DrawModel(missileObject.World, camera.View, camera.Projection);
