@@ -181,6 +181,12 @@ namespace SharedProject
             if (Input.IsKeyDown(Keys.Right)) mechObject.Rotation -= new Vector3(0.0f, 0.0f, 0.5f);
             #endregion
 #endif
+            //一回転したら値をリセット
+            if(mechObject.Rotation.Z >= 360.0f || mechObject.Rotation.Z <= -360.0f)
+            {
+                mechObject.Rotation = Vector3.Zero;
+            }
+
             //原点からの座標にセット
             camera.Position = mechObject.CameraOffset;
             camera.Target = mechObject.TargetOffset;
