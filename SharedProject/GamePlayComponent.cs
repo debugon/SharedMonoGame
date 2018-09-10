@@ -184,7 +184,7 @@ namespace SharedProject
             //一回転したら値をリセット
             if(mechObject.Rotation.Z >= 360.0f || mechObject.Rotation.Z <= -360.0f)
             {
-                mechObject.Rotation = Vector3.Zero;
+                mechObject.Rotation = new Vector3(mechObject.Rotation.X, mechObject.Rotation.Y, Vector3.Zero.Z);
             }
 
             //原点からの座標にセット
